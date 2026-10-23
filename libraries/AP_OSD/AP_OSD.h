@@ -187,6 +187,18 @@ private:
     AP_OSD_Setting sats{true, 1, 3};
     AP_OSD_Setting fltmode{true, 2, 8};
     AP_OSD_Setting message{true, 2, 6};
+    AP_OSD_Setting custom1{false, 0, 0};
+    AP_OSD_Setting custom2{false, 0, 0};
+    AP_OSD_Setting custom3{false, 0, 0};
+    AP_OSD_Setting custom4{false, 0, 0};
+    AP_OSD_Setting custom5{false, 0, 0};
+    AP_OSD_Setting custom6{false, 0, 0};
+    AP_OSD_Setting custom7{false, 0, 0};
+    AP_OSD_Setting custom8{false, 0, 0};
+    AP_OSD_Setting custom9{false, 0, 0};
+    AP_OSD_Setting custom10{false, 0, 0};
+    AP_OSD_Setting custom11{false, 0, 0};
+    AP_OSD_Setting custom12{false, 0, 0};
     AP_OSD_Setting gspeed{true, 2, 14};
     AP_OSD_Setting horizon{true, 14, 8};
     AP_OSD_Setting home{true, 14, 1};
@@ -279,6 +291,19 @@ private:
     void draw_sats(uint8_t x, uint8_t y);
     void draw_fltmode(uint8_t x, uint8_t y);
     void draw_message(uint8_t x, uint8_t y);
+    void draw_custom(uint8_t x, uint8_t y, uint8_t idx);
+    void draw_custom1(uint8_t x, uint8_t y);
+    void draw_custom2(uint8_t x, uint8_t y);
+    void draw_custom3(uint8_t x, uint8_t y);
+    void draw_custom4(uint8_t x, uint8_t y);
+    void draw_custom5(uint8_t x, uint8_t y);
+    void draw_custom6(uint8_t x, uint8_t y);
+    void draw_custom7(uint8_t x, uint8_t y);
+    void draw_custom8(uint8_t x, uint8_t y);
+    void draw_custom9(uint8_t x, uint8_t y);
+    void draw_custom10(uint8_t x, uint8_t y);
+    void draw_custom11(uint8_t x, uint8_t y);
+    void draw_custom12(uint8_t x, uint8_t y);
     void draw_gspeed(uint8_t x, uint8_t y);
     void draw_horizon(uint8_t x, uint8_t y);
     void draw_home(uint8_t x, uint8_t y);
@@ -539,6 +564,11 @@ public:
     {
         return _singleton;
     }
+    // custom text slots, written by Lua scripts
+    static const uint8_t CUSTOM_SLOTS = 12;
+    static const uint8_t CUSTOM_LEN = 20;
+    void set_custom_text(uint8_t idx, const char *text);
+    void get_custom_text(uint8_t idx, char *buf, uint8_t buflen);
 
     // init - perform required initialisation
     void init();
@@ -721,6 +751,10 @@ private:
     static AP_OSD *_singleton;
     // multi-thread access support
     HAL_Semaphore _sem;
+
+    // storage for custom text slots
+    char custom_text[CUSTOM_SLOTS][CUSTOM_LEN + 1] {};
+    HAL_Semaphore custom_sem;
 };
 
 namespace AP
