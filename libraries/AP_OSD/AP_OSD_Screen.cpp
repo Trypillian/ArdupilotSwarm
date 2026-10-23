@@ -1174,6 +1174,18 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     AP_GROUPINFO("ESC_IDX", 10, AP_OSD_Screen, esc_index, 0),
 #endif
 
+    AP_SUBGROUPINFO(custom1, "CUSTOM1", 11, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom2, "CUSTOM2", 12, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom3, "CUSTOM3", 13, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom4, "CUSTOM4", 14, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom5, "CUSTOM5", 15, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom6, "CUSTOM6", 16, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom7, "CUSTOM7", 17, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom8, "CUSTOM8", 18, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom9, "CUSTOM9", 19, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom10, "CUSTOM10", 20, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom11, "CUSTOM11", 21, AP_OSD_Screen, AP_OSD_Setting),
+    AP_SUBGROUPINFO(custom12, "CUSTOM12", 22, AP_OSD_Screen, AP_OSD_Setting),
     AP_GROUPEND
 };
 
@@ -1619,6 +1631,33 @@ void AP_OSD_Screen::draw_batused(uint8_t x, uint8_t y)
 
 //Autoscroll message is the same as in minimosd-extra.
 //Thanks to night-ghost for the approach.
+// draw text from a custom slot (written by Lua)
+void AP_OSD_Screen::draw_custom(uint8_t x, uint8_t y, uint8_t idx)
+{
+    char buf[AP_OSD::CUSTOM_LEN + 1];
+    osd->get_custom_text(idx, buf, sizeof(buf));
+    if (buf[0] == '\0') {
+        return;
+    }
+    // font has no small letters
+    for (uint8_t i = 0; buf[i] != '\0'; i++) {
+        buf[i] = toupper(buf[i]);
+    }
+    backend->write(x, y, false, "%s", buf);
+}
+
+void AP_OSD_Screen::draw_custom1(uint8_t x, uint8_t y) { draw_custom(x, y, 0); }
+void AP_OSD_Screen::draw_custom2(uint8_t x, uint8_t y) { draw_custom(x, y, 1); }
+void AP_OSD_Screen::draw_custom3(uint8_t x, uint8_t y) { draw_custom(x, y, 2); }
+void AP_OSD_Screen::draw_custom4(uint8_t x, uint8_t y) { draw_custom(x, y, 3); }
+void AP_OSD_Screen::draw_custom5(uint8_t x, uint8_t y) { draw_custom(x, y, 4); }
+void AP_OSD_Screen::draw_custom6(uint8_t x, uint8_t y) { draw_custom(x, y, 5); }
+void AP_OSD_Screen::draw_custom7(uint8_t x, uint8_t y) { draw_custom(x, y, 6); }
+void AP_OSD_Screen::draw_custom8(uint8_t x, uint8_t y) { draw_custom(x, y, 7); }
+void AP_OSD_Screen::draw_custom9(uint8_t x, uint8_t y) { draw_custom(x, y, 8); }
+void AP_OSD_Screen::draw_custom10(uint8_t x, uint8_t y) { draw_custom(x, y, 9); }
+void AP_OSD_Screen::draw_custom11(uint8_t x, uint8_t y) { draw_custom(x, y, 10); }
+void AP_OSD_Screen::draw_custom12(uint8_t x, uint8_t y) { draw_custom(x, y, 11); }
 void AP_OSD_Screen::draw_message(uint8_t x, uint8_t y)
 {
     AP_Notify * notify = AP_Notify::get_singleton();
@@ -2566,6 +2605,18 @@ void AP_OSD_Screen::draw(void)
 #endif
 
     DRAW_SETTING(message);
+    DRAW_SETTING(custom1);
+    DRAW_SETTING(custom2);
+    DRAW_SETTING(custom3);
+    DRAW_SETTING(custom4);
+    DRAW_SETTING(custom5);
+    DRAW_SETTING(custom6);
+    DRAW_SETTING(custom7);
+    DRAW_SETTING(custom8);
+    DRAW_SETTING(custom9);
+    DRAW_SETTING(custom10);
+    DRAW_SETTING(custom11);
+    DRAW_SETTING(custom12);
     DRAW_SETTING(horizon);
     DRAW_SETTING(compass);
     DRAW_SETTING(altitude);
