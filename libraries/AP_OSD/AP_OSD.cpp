@@ -692,6 +692,27 @@ void AP_OSD::handle_msg(const mavlink_message_t &msg, const GCS_MAVLINK& link)
 }
 #endif
 
+// write text into a custom slot (called from Lua)
+void AP_OSD::set_custom_text(uint8_t idx, const char *text)
+{
+    if (idx >= CUSTOM_SLOTS || text == nullptr) {
+        return;
+    }
+    WITH_SEMAPHORE(custom_sem);
+    strncpy(custom_text[idx], text, CUSTOM_LEN);
+    custom_text[idx][CUSTOM_LEN] = '\0';
+}
+
+// copy text of a custom slot into buf (called when drawing)
+void AP_OSD::get_custom_text(uint8_t idx, char *buf, uint8_t buflen)
+{
+    if (idx >= CUSTOM_SLOTS || buflen == 0) {
+        return;
+    }
+    WITH_SEMAPHORE(custom_sem);
+    strncpy(buf, custom_text[idx], buflen - 1);
+    buf[buflen - 1] = '\0';
+}
 AP_OSD *AP::osd() {
     return AP_OSD::get_singleton();
 }

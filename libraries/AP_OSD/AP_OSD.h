@@ -539,6 +539,11 @@ public:
     {
         return _singleton;
     }
+    // custom text slots, written by Lua scripts
+    static const uint8_t CUSTOM_SLOTS = 12;
+    static const uint8_t CUSTOM_LEN = 20;
+    void set_custom_text(uint8_t idx, const char *text);
+    void get_custom_text(uint8_t idx, char *buf, uint8_t buflen);
 
     // init - perform required initialisation
     void init();
@@ -721,6 +726,10 @@ private:
     static AP_OSD *_singleton;
     // multi-thread access support
     HAL_Semaphore _sem;
+
+    // storage for custom text slots
+    char custom_text[CUSTOM_SLOTS][CUSTOM_LEN + 1] {};
+    HAL_Semaphore custom_sem;
 };
 
 namespace AP
