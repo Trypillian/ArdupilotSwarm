@@ -1043,3 +1043,8 @@ include SITL/SITL.h depends AP_SIM_ENABLED
 singleton SITL::SIM depends AP_SIM_ENABLED
 singleton SITL::SIM rename sim
 singleton SITL::SIM method set_pose boolean uint8_t'skip_check Location Quaternion Vector3f Vector3f
+
+include AP_OSD/AP_OSD.h
+singleton AP_OSD rename osd
+singleton AP_OSD depends OSD_ENABLED
+singleton AP_OSD method set_custom_text void uint8_t 0 11 string
