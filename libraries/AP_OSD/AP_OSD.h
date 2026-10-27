@@ -566,8 +566,8 @@ public:
     {
         return _singleton;
     }
-    // custom text slots, written by Lua scripts
-    static const uint8_t CUSTOM_SLOTS = 12;
+    // custom values PARAM1..PARAM8, written by Lua scripts
+    static const uint8_t CUSTOM_SLOTS = 8;
     static const uint8_t CUSTOM_LEN = 20;
     void set_custom_text(uint8_t idx, const char *text);
     void get_custom_text(uint8_t idx, char *buf, uint8_t buflen);
