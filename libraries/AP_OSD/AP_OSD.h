@@ -82,6 +82,20 @@ private:
     const float default_ypos;
 };
 
+// settings of a custom OSD item: bitmask of PARAM values to show + position
+class AP_OSD_CustomSetting
+{
+public:
+    AP_Int16 mask;
+    AP_Int8 xpos;
+    AP_Int8 ypos;
+
+    AP_OSD_CustomSetting();
+
+    // User settable parameters
+    static const struct AP_Param::GroupInfo var_info[];
+};
+
 class AP_OSD;
 
 class AP_OSD_AbstractScreen
