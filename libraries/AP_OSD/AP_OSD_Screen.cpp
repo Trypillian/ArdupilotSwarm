@@ -1175,17 +1175,41 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
 #endif
 
     // 11-22 were CUSTOM1-CUSTOM12, do not reuse
+    // @Group: CST1
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst1, "CST1", 23, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST2
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst2, "CST2", 24, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST3
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst3, "CST3", 25, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST4
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst4, "CST4", 26, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST5
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst5, "CST5", 27, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST6
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst6, "CST6", 28, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST7
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst7, "CST7", 29, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST8
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst8, "CST8", 30, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST9
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst9, "CST9", 31, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST10
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst10, "CST10", 32, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST11
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst11, "CST11", 33, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST12
+    // @Path: AP_OSD_CustomSetting.cpp
     AP_SUBGROUPINFO(cst12, "CST12", 34, AP_OSD_Screen, AP_OSD_CustomSetting),
     AP_GROUPEND
 };

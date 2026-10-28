@@ -56,33 +56,3 @@ AP_OSD_Setting::AP_OSD_Setting(bool _enabled, uint8_t x, uint8_t y) :
 {
     AP_Param::setup_object_defaults(this, var_info);
 }
-
-const AP_Param::GroupInfo AP_OSD_CustomSetting::var_info[] = {
-    // @Param: _MASK
-    // @DisplayName: Custom item values
-    // @Description: Bitmask of custom values (set by Lua) shown in this item, one per line. 0 disables the item
-    // @Bitmask: 0:PARAM1,1:PARAM2,2:PARAM3,3:PARAM4,4:PARAM5,5:PARAM6,6:PARAM7,7:PARAM8
-    // @User: Standard
-    AP_GROUPINFO("_MASK", 1, AP_OSD_CustomSetting, mask, 0),
-
-    // @Param: _X
-    // @DisplayName: X position
-    // @Description: Horizontal position on screen
-    // @Range: 0 29
-    // @User: Standard
-    AP_GROUPINFO("_X", 2, AP_OSD_CustomSetting, xpos, 0),
-
-    // @Param: _Y
-    // @DisplayName: Y position
-    // @Description: Vertical position on screen (first value; next values go below)
-    // @Range: 0 15
-    // @User: Standard
-    AP_GROUPINFO("_Y", 3, AP_OSD_CustomSetting, ypos, 0),
-
-    AP_GROUPEND
-};
-
-AP_OSD_CustomSetting::AP_OSD_CustomSetting()
-{
-    AP_Param::setup_object_defaults(this, var_info);
-}
