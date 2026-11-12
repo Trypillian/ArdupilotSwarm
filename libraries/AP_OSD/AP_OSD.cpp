@@ -706,7 +706,11 @@ void AP_OSD::set_custom_text(uint8_t idx, const char *text)
 // copy text of a custom slot into buf (called when drawing)
 void AP_OSD::get_custom_text(uint8_t idx, char *buf, uint8_t buflen)
 {
-    if (idx >= CUSTOM_SLOTS || buflen == 0) {
+    if (buflen == 0) {
+        return;
+    }
+    if (idx >= CUSTOM_SLOTS) {
+        buf[0] = '\0';   // unknown value: return empty text
         return;
     }
     WITH_SEMAPHORE(custom_sem);

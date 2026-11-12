@@ -1174,18 +1174,43 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info2[] = {
     AP_GROUPINFO("ESC_IDX", 10, AP_OSD_Screen, esc_index, 0),
 #endif
 
-    AP_SUBGROUPINFO(custom1, "CUSTOM1", 11, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom2, "CUSTOM2", 12, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom3, "CUSTOM3", 13, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom4, "CUSTOM4", 14, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom5, "CUSTOM5", 15, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom6, "CUSTOM6", 16, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom7, "CUSTOM7", 17, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom8, "CUSTOM8", 18, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom9, "CUSTOM9", 19, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom10, "CUSTOM10", 20, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom11, "CUSTOM11", 21, AP_OSD_Screen, AP_OSD_Setting),
-    AP_SUBGROUPINFO(custom12, "CUSTOM12", 22, AP_OSD_Screen, AP_OSD_Setting),
+    // 11-22 were CUSTOM1-CUSTOM12, do not reuse
+    // @Group: CST1
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst1, "CST1", 23, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST2
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst2, "CST2", 24, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST3
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst3, "CST3", 25, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST4
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst4, "CST4", 26, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST5
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst5, "CST5", 27, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST6
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst6, "CST6", 28, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST7
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst7, "CST7", 29, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST8
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst8, "CST8", 30, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST9
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst9, "CST9", 31, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST10
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst10, "CST10", 32, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST11
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst11, "CST11", 33, AP_OSD_Screen, AP_OSD_CustomSetting),
+    // @Group: CST12
+    // @Path: AP_OSD_CustomSetting.cpp
+    AP_SUBGROUPINFO(cst12, "CST12", 34, AP_OSD_Screen, AP_OSD_CustomSetting),
     AP_GROUPEND
 };
 
@@ -1631,33 +1656,27 @@ void AP_OSD_Screen::draw_batused(uint8_t x, uint8_t y)
 
 //Autoscroll message is the same as in minimosd-extra.
 //Thanks to night-ghost for the approach.
-// draw text from a custom slot (written by Lua)
-void AP_OSD_Screen::draw_custom(uint8_t x, uint8_t y, uint8_t idx)
+// draw a custom item: every PARAM value selected in its mask, one per line
+void AP_OSD_Screen::draw_cst(const AP_OSD_CustomSetting &item)
 {
-    char buf[AP_OSD::CUSTOM_LEN + 1];
-    osd->get_custom_text(idx, buf, sizeof(buf));
-    if (buf[0] == '\0') {
-        return;
+    const uint8_t mask = uint8_t(item.mask.get());
+    uint8_t row = 0;
+    for (uint8_t i = 0; i < AP_OSD::CUSTOM_SLOTS; i++) {
+        if ((mask & (1U << i)) == 0) {
+            continue;
+        }
+        char buf[AP_OSD::CUSTOM_LEN + 1];
+        osd->get_custom_text(i, buf, sizeof(buf));
+        // font has no small letters
+        for (uint8_t j = 0; buf[j] != '\0'; j++) {
+            buf[j] = toupper(buf[j]);
+        }
+        if (buf[0] != '\0') {
+            backend->write(item.xpos, item.ypos + row, false, "%s", buf);
+        }
+        row++;   // an empty value still keeps its line
     }
-    // font has no small letters
-    for (uint8_t i = 0; buf[i] != '\0'; i++) {
-        buf[i] = toupper(buf[i]);
-    }
-    backend->write(x, y, false, "%s", buf);
 }
-
-void AP_OSD_Screen::draw_custom1(uint8_t x, uint8_t y) { draw_custom(x, y, 0); }
-void AP_OSD_Screen::draw_custom2(uint8_t x, uint8_t y) { draw_custom(x, y, 1); }
-void AP_OSD_Screen::draw_custom3(uint8_t x, uint8_t y) { draw_custom(x, y, 2); }
-void AP_OSD_Screen::draw_custom4(uint8_t x, uint8_t y) { draw_custom(x, y, 3); }
-void AP_OSD_Screen::draw_custom5(uint8_t x, uint8_t y) { draw_custom(x, y, 4); }
-void AP_OSD_Screen::draw_custom6(uint8_t x, uint8_t y) { draw_custom(x, y, 5); }
-void AP_OSD_Screen::draw_custom7(uint8_t x, uint8_t y) { draw_custom(x, y, 6); }
-void AP_OSD_Screen::draw_custom8(uint8_t x, uint8_t y) { draw_custom(x, y, 7); }
-void AP_OSD_Screen::draw_custom9(uint8_t x, uint8_t y) { draw_custom(x, y, 8); }
-void AP_OSD_Screen::draw_custom10(uint8_t x, uint8_t y) { draw_custom(x, y, 9); }
-void AP_OSD_Screen::draw_custom11(uint8_t x, uint8_t y) { draw_custom(x, y, 10); }
-void AP_OSD_Screen::draw_custom12(uint8_t x, uint8_t y) { draw_custom(x, y, 11); }
 void AP_OSD_Screen::draw_message(uint8_t x, uint8_t y)
 {
     AP_Notify * notify = AP_Notify::get_singleton();
@@ -2605,18 +2624,18 @@ void AP_OSD_Screen::draw(void)
 #endif
 
     DRAW_SETTING(message);
-    DRAW_SETTING(custom1);
-    DRAW_SETTING(custom2);
-    DRAW_SETTING(custom3);
-    DRAW_SETTING(custom4);
-    DRAW_SETTING(custom5);
-    DRAW_SETTING(custom6);
-    DRAW_SETTING(custom7);
-    DRAW_SETTING(custom8);
-    DRAW_SETTING(custom9);
-    DRAW_SETTING(custom10);
-    DRAW_SETTING(custom11);
-    DRAW_SETTING(custom12);
+    draw_cst(cst1);
+    draw_cst(cst2);
+    draw_cst(cst3);
+    draw_cst(cst4);
+    draw_cst(cst5);
+    draw_cst(cst6);
+    draw_cst(cst7);
+    draw_cst(cst8);
+    draw_cst(cst9);
+    draw_cst(cst10);
+    draw_cst(cst11);
+    draw_cst(cst12);
     DRAW_SETTING(horizon);
     DRAW_SETTING(compass);
     DRAW_SETTING(altitude);
